@@ -1,0 +1,171 @@
+{
+  "connections": {
+    "3rKOTNBJxnfDRviRGwRJUpsdfiu1": [
+      null,
+      true
+    ],
+    "CklZsjcMh5OLRFbggsBcfbRJqls2": {
+      "2": true
+    },
+    "PQ4vnBLYzoZOtau0axz6LScjnal1": [
+      null,
+      true,
+      true
+    ],
+    "WsIMrb5oKnOsy3G5UkGonRd9Pk53": [
+      null,
+      true,
+      null,
+      true,
+      true
+    ],
+    "dY36YIEwEzbecgqcxSfqLbj5V1k2": [
+      null,
+      true,
+      true,
+      true,
+      true
+    ],
+    "lddgxqFBpfXDD0o4y2hBgH0pSWL2": {
+      "2": true,
+      "4": true
+    },
+    "nTSHJQz5RGWz3sNKgPEq1CTvUFY2": [
+      null,
+      true,
+      true,
+      null,
+      true
+    ]
+  },
+  "joblistings": [
+    null,
+    {
+      "companyName": "Google",
+      "location": "Silicon Valley",
+      "salary": 10000,
+      "title": "Software Engineer"
+    },
+    {
+      "companyName": "Nvidia",
+      "location": "USA",
+      "salary": 10000,
+      "title": "Flutter Developer"
+    },
+    {
+      "companyName": "Microsoft",
+      "location": "",
+      "salary": 30000,
+      "title": "Flutter Developer"
+    },
+    {
+      "companyName": "Adobe",
+      "location": "USA",
+      "salary": 43000,
+      "title": "Flutter Developer"
+    },
+    {
+      "companyName": "Intel",
+      "location": "USA",
+      "salary": 30000,
+      "title": "Flutter Developer"
+    }
+  ],
+  "posts": [
+    null,
+    {
+      "description": "Nitin",
+      "imageURL": "https://fakeimg.pl/400x200",
+      "likes": 222,
+      "postID": 1,
+      "title": " Nitin Mishra",
+      "userID": "1"
+    },
+    {
+      "description": "This is a post created by Deep Bhojani",
+      "imageURL": "https://fakeimg.pl/400x200",
+      "likes": 22,
+      "postID": 2,
+      "title": "Deep",
+      "userID": "2"
+    },
+    {
+      "description": "This is a post created by Aswathi ES",
+      "imageURL": "https://fakeimg.pl/400x200",
+      "likes": 334,
+      "postID": 3,
+      "title": "Aswathi",
+      "userID": "3"
+    },
+    {
+      "description": "A Post by Shubhkiranjit",
+      "imageURL": "https://fakeimg.pl/400x200",
+      "likes": 33,
+      "postID": 4,
+      "title": "Shubhkiranjit",
+      "userID": "4"
+    }
+  ],
+  "users": {
+    "3rKOTNBJxnfDRviRGwRJUpsdfiu1": {
+      "bio": "Store Manager",
+      "company": "No Frills",
+      "email": "deep@gmail.com",
+      "gender": "Male",
+      "location": "Kitchener",
+      "name": "Deep Bhojani",
+      "photo": "https://firebasestorage.googleapis.com/v0/b/recruitica-8c2be.appspot.com/o/logo.png?alt=media&token=9ec2840c-c6d7-4ac0-a75a-c2dbce9f3715",
+      "userID": 2
+    },
+    "6V7aTi9J26RM8FrfO4FPVKkvcpv1": {
+      "bio": "I am Navin, the great",
+      "company": "Conestoga",
+      "email": "navin@gmail.com",
+      "gender": "Male",
+      "location": "Waterloo",
+      "name": "Navin Thomas",
+      "photo": "https://firebasestorage.googleapis.com/v0/b/recruitica-8c2be.appspot.com/o/logo.png?alt=media&token=9ec2840c-c6d7-4ac0-a75a-c2dbce9f3715",
+      "userID": 6
+    },
+    "PQ4vnBLYzoZOtau0axz6LScjnal1": {
+      "bio": "Developer",
+      "company": "Remote",
+      "email": "shubhkiranjit@gmail.com",
+      "gender": "Female",
+      "location": "Cambridge ",
+      "name": "ShubhKiranjit",
+      "photo": "https://firebasestorage.googleapis.com/v0/b/recruitica-8c2be.appspot.com/o/logo.png?alt=media&token=9ec2840c-c6d7-4ac0-a75a-c2dbce9f3715",
+      "userID": 4
+    },
+    "WsIMrb5oKnOsy3G5UkGonRd9Pk53": {
+      "bio": "uvfgy",
+      "company": "Google",
+      "email": "test@gmail.com",
+      "gender": "Male",
+      "location": "testing",
+      "name": "Test User",
+      "photo": "https://firebasestorage.googleapis.com/v0/b/recruitica-8c2be.appspot.com/o/logo.png?alt=media&token=9ec2840c-c6d7-4ac0-a75a-c2dbce9f3715",
+      "userID": 5
+    },
+    "dY36YIEwEzbecgqcxSfqLbj5V1k2": {
+      "bio": "IT Technician ",
+      "company": "Conestoga College",
+      "email": "mnitin2311@gmail.com",
+      "gender": "Male",
+      "location": "Kitchener",
+      "name": "Nitin Mishra",
+      "photo": "https://firebasestorage.googleapis.com/v0/b/recruitica-8c2be.appspot.com/o/1685300228679.jpeg?alt=media&token=44e31788-33b2-4727-8396-3ad66041e5af",
+      "userID": 1
+    },
+    "nTSHJQz5RGWz3sNKgPEq1CTvUFY2": {
+      "bio": "Store Manager",
+      "company": "Walmart",
+      "email": "aswathi@gmail.com",
+      "gender": "Male",
+      "location": "Kitchener",
+      "name": "Aswathi ES",
+      "photo": "https://firebasestorage.googleapis.com/v0/b/recruitica-8c2be.appspot.com/o/logo.png?alt=media&token=9ec2840c-c6d7-4ac0-a75a-c2dbce9f3715",
+      "userID": 3
+    }
+  }
+}
