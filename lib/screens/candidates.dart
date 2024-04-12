@@ -52,7 +52,7 @@ class _CandidatePageState extends State<CandidatePage> {
       User? user = _auth.currentUser;
       if (user != null) {
         String currentUserUid = user.uid;
-        print("Current userID: ${currentUserUid} ${userId}");
+        // print("Current userID: ${currentUserUid} ${userId}");
         await _connectionsReference
             .child(currentUserUid)
             .child(userId.toString())
@@ -141,62 +141,134 @@ class _CandidatePageState extends State<CandidatePage> {
                   }
                   final data = snapshot.data!.snapshot.value;
                   final List<String> connectedUserIDs = [];
-                  print("USer data : ${data}");
 
-                  if (data != null && data is List && data.length > 1) {
-                    for (var i = 1; i < data.length; i++) {
-                      if (data[i] != null && data[i] is bool && data[i]) {
-                        print("USer ID : ${i}");
-                        connectedUserIDs.add(i.toString());
+                  // print("USer data : $data");
+
+                  if (data != null) {
+                    if (data is Map) {
+                      data.forEach((key, value) {
+                        if (value is bool && value) {
+                          // print("USer ID : $key");
+                          connectedUserIDs.add(key.toString());
+                        }
+                      });
+                    } else if (data is List) {
+                      for (var i = 1; i < data.length; i++) {
+                        if (data[i] != null && data[i] is bool && data[i]) {
+                          // print("USer ID : $i");
+                          connectedUserIDs.add(i.toString());
+                        }
                       }
                     }
                   }
-                  print(connectedUserIDs);
-                  return ListView.builder(
-                    itemCount: candidates.length,
-                    itemBuilder: (context, index) {
-                      Candidate candidate = candidates[index];
 
-                      bool isConnected = connectedUserIDs
-                          .contains(candidate.userID.toString());
+                  // print("Connected UserID array: $connectedUserIDs");
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 5.0,
+                        mainAxisSpacing: 5.0,
+                        childAspectRatio: 1,
+                      ),
+                      itemCount: candidates.length,
+                      itemBuilder: (context, index) {
+                        Candidate candidate = candidates[index];
 
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Card(
-                          elevation: 4,
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundImage: NetworkImage(candidate.imageUrl),
-                            ),
-                            title: Text(candidate.name),
-                            subtitle: Text(candidate.position),
-                            onTap: () {
-                              // Navigate to candidate detail screen
-                            },
-                            trailing: isConnected
-                                ? ElevatedButton(
-                                    onPressed: () {
-                                      _disconnectUser(int.parse(
-                                          candidate.userID.toString()));
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors
-                                          .red, // Set the background color to red
-                                    ),
-                                    child: const Text('Remove',
-                                        style: TextStyle(color: Colors.white)),
-                                  )
-                                : ElevatedButton(
-                                    onPressed: () {
-                                      _connectUser(int.parse(
-                                          candidate.userID.toString()));
-                                    },
-                                    child: const Text('Connect'),
-                                  ),
+                        bool isConnected = connectedUserIDs
+                            .contains(candidate.userID.toString());
+
+                        return Card(
+                          elevation: 2,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
-                        ),
-                      );
-                    },
+                          child: InkWell(
+                            onTap: () {},
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Expanded(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(candidate.imageUrl),
+                                        fit: BoxFit.cover,
+                                      ),
+                                      borderRadius: const BorderRadius.vertical(
+                                        top: Radius.circular(8.0),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text(
+                                        candidate.name,
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4.0),
+                                      Text(
+                                        candidate.position,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 14.0,
+                                          color: Colors.grey[600],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8.0),
+                                      ElevatedButton(
+                                        onPressed: isConnected
+                                            ? () {
+                                                _disconnectUser(int.parse(
+                                                    candidate.userID
+                                                        .toString()));
+                                              }
+                                            : () {
+                                                _connectUser(int.parse(candidate
+                                                    .userID
+                                                    .toString()));
+                                              },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: isConnected
+                                              ? Colors.red
+                                              : Colors.blue,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16.0),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          isConnected ? 'Remove' : 'Connect',
+                                          style: const TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   );
                 },
               );
