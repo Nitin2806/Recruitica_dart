@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="google_api_key">AIzaSyBCF9_kbhMXJz4-y7Pt3cDmSVpUNi7x0uo</string>
+    <string name="gcm_defaultSenderId">1083695346957</string>
+    <string name="project_id">recruitica-8c2be</string>
+    <string name="google_app_id">1:1083695346957:android:ac0abd28c77db32edfec44</string>
+</resources>
