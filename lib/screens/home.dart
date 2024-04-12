@@ -46,14 +46,24 @@ class HomePage extends StatelessWidget {
               }
 
               final data = snapshot.data!.snapshot.value;
-              // print("userID from home ${data}");
               final List<String> connectedUserIDs = [];
 
-              if (data != null && data is List && data.length > 1) {
-                for (var i = 1; i < data.length; i++) {
-                  if (data[i] != null && data[i] is bool && data[i]) {
-                    // print("userID from home ${i}");
-                    connectedUserIDs.add(i.toString());
+              // print("USer data : $data");
+
+              if (data != null) {
+                if (data is Map) {
+                  data.forEach((key, value) {
+                    if (value is bool && value) {
+                      // print("USer ID : $key");
+                      connectedUserIDs.add(key.toString());
+                    }
+                  });
+                } else if (data is List) {
+                  for (var i = 1; i < data.length; i++) {
+                    if (data[i] != null && data[i] is bool && data[i]) {
+                      // print("USer ID : $i");
+                      connectedUserIDs.add(i.toString());
+                    }
                   }
                 }
               }
@@ -77,6 +87,8 @@ class HomePage extends StatelessWidget {
 
                   if (postData != null && postData is List) {
                     for (var i = 1; i < postData.length; i++) {
+                      // print("print postData: $i $postData[i]");
+
                       final post = postData[i];
                       if (post != null && post is Map) {
                         final postUserID = post['userID'].toString();
@@ -90,6 +102,7 @@ class HomePage extends StatelessWidget {
                       }
                     }
                   }
+                  // print("print posts $posts");
 
                   return ListView.builder(
                     itemCount: posts.length,
