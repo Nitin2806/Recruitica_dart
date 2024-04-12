@@ -120,7 +120,11 @@ class _CandidatePageState extends State<CandidatePage> {
                     candidates.add(Candidate(
                       name: value['name'],
                       imageUrl: value['photo'],
-                      position: value['bio'],
+                      bio: value['bio'],
+                      company: value['company'],
+                      email: value['email'],
+                      location: value['location'],
+                      gender: value['gender'],
                       userID: candidateUserId,
                     ));
                   }
@@ -186,7 +190,15 @@ class _CandidatePageState extends State<CandidatePage> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      CandidateDetail(candidate: candidate),
+                                ),
+                              );
+                            },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,

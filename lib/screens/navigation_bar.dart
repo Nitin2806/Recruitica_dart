@@ -65,17 +65,36 @@ class _NavigationmenuState extends State<Navigationmenu> {
         ),
       ),
       body: _buildBody(),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (int index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        unselectedItemColor: Colors.black,
-        selectedItemColor: Colors.deepPurple,
-        items: _buildBottomNavBarItems(),
-      ),
+      bottomNavigationBar: _auth.currentUser != null
+          ? BottomNavigationBar(
+              currentIndex: _currentIndex,
+              onTap: (int index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+              unselectedItemColor: Colors.black,
+              selectedItemColor: Colors.deepPurple,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.people),
+                  label: 'Candidates',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.add),
+                  label: 'Create Post',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.work),
+                  label: 'Job Listings',
+                ),
+              ],
+            )
+          : null,
     );
   }
 
@@ -84,52 +103,6 @@ class _NavigationmenuState extends State<Navigationmenu> {
       return _screens[_currentIndex];
     } else {
       return LoginPage();
-    }
-  }
-
-  List<BottomNavigationBarItem> _buildBottomNavBarItems() {
-    if (_auth.currentUser != null) {
-      return const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.people),
-          label: 'Candidates',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.add),
-          label: 'Create Post',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.work),
-          label: 'Job Listings',
-        ),
-      ];
-    } else {
-      return const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.people),
-          label: 'Candidates',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.add),
-          label: 'Create Post',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.work),
-          label: 'Job Listings',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.login),
-          label: 'Login',
-        ),
-      ];
     }
   }
 
