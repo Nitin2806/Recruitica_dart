@@ -5,9 +5,9 @@ class JobDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Job Detail'),
+        title: const Text('Job Detail'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Job Detail Screen'),
       ),
     );

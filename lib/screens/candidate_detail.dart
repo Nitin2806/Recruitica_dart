@@ -4,13 +4,13 @@ import '../models/user.dart';
 class CandidateDetail extends StatelessWidget {
   final Candidate candidate;
 
-  const CandidateDetail({Key? key, required this.candidate}) : super(key: key);
+  const CandidateDetail({super.key, required this.candidate});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Candidate Profile'),
+        title: const Text("Profile"),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -34,7 +34,7 @@ class CandidateDetail extends StatelessWidget {
               style: TextStyle(fontSize: 18, color: Colors.grey[700]),
             ),
             const SizedBox(height: 20),
-            Divider(),
+            const Divider(),
             const SizedBox(height: 20),
             _buildDetailRow('Company', candidate.company),
             const SizedBox(height: 12),
@@ -64,7 +64,7 @@ class CandidateDetail extends StatelessWidget {
         Expanded(
           child: Text(
             value,
-            style: TextStyle(fontSize: 18),
+            style: const TextStyle(fontSize: 18),
           ),
         ),
       ],

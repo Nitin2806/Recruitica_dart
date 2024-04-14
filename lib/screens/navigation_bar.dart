@@ -6,16 +6,17 @@ import 'package:recruitica/screens/home.dart';
 import 'package:recruitica/screens/job_listings.dart';
 import 'package:recruitica/screens/login.dart';
 
-class Navigationmenu extends StatefulWidget {
-  const Navigationmenu({Key? key}) : super(key: key);
+class Navigation extends StatefulWidget {
+  const Navigation({super.key});
 
   @override
-  _NavigationmenuState createState() => _NavigationmenuState();
+  _NavigationState createState() => _NavigationState();
 }
 
-class _NavigationmenuState extends State<Navigationmenu> {
+class _NavigationState extends State<Navigation> {
   int _currentIndex = 0;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  Color blueApp = const Color(0xFF5D63D4);
 
   @override
   void initState() {
@@ -45,7 +46,7 @@ class _NavigationmenuState extends State<Navigationmenu> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: blueApp,
         actions: [
           IconButton(
             icon: const Icon(Icons.search, color: Colors.black),
@@ -102,13 +103,13 @@ class _NavigationmenuState extends State<Navigationmenu> {
     if (_auth.currentUser != null) {
       return _screens[_currentIndex];
     } else {
-      return LoginPage();
+      return const LoginPage();
     }
   }
 
   final List<Widget> _screens = [
     HomePage(title: "Home"),
-    CandidatePage(),
+    const CandidatePage(),
     const CreatePost(),
     const JobListings(),
   ];
