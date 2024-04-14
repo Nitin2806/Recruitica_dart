@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class JobListings extends StatefulWidget {
-  const JobListings({Key? key}) : super(key: key);
+  const JobListings({super.key});
 
   @override
   _JobListingsState createState() => _JobListingsState();
@@ -60,7 +60,7 @@ class _JobListingsState extends State<JobListings>
           .orderByChild('uid')
           .equalTo(uid)
           .once();
-      print("Applied job ${dataSnapshot.snapshot.value}");
+      // print("Applied job ${dataSnapshot.snapshot.value}");
       if (dataSnapshot.snapshot.value != null) {
         final data = dataSnapshot.snapshot.value as Map<dynamic, dynamic>;
         final List<int> jobIds = [];
@@ -72,7 +72,7 @@ class _JobListingsState extends State<JobListings>
 
         _appliedJobIds = jobIds.map((id) => id.toString()).toSet();
 
-        print(_appliedJobIds);
+        // print(_appliedJobIds);
       }
 
       setState(() {});
@@ -105,7 +105,7 @@ class _JobListingsState extends State<JobListings>
       stream: databaseReference.child('joblistings').onValue,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }
@@ -134,9 +134,9 @@ class _JobListingsState extends State<JobListings>
 
   Widget _buildJobTile(Map<dynamic, dynamic> jobData) {
     final jobId = jobData['id'].toString();
-    print(jobId);
+    // print(jobId);
     final isApplied = _appliedJobIds.contains(jobId);
-    print(isApplied);
+    // print(isApplied);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -145,16 +145,16 @@ class _JobListingsState extends State<JobListings>
         child: ListTile(
           title: Text(
             jobData['title'],
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text('Company Name: ${jobData['companyName']}'),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               Text('Location: ${jobData['location']}'),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               Text('Salary: ${jobData['salary']}'),
             ],
           ),
@@ -169,7 +169,7 @@ class _JobListingsState extends State<JobListings>
                 )
               : ElevatedButton(
                   onPressed: () => _applyForJob(jobData),
-                  child: Text('Apply'),
+                  child: const Text('Apply'),
                 ),
         ),
       ),
@@ -201,7 +201,7 @@ class _JobListingsState extends State<JobListings>
       _fetchAppliedJobs();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('User not authenticated.'),
         ),
       );

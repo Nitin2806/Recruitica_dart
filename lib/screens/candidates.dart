@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,6 +7,8 @@ import 'package:recruitica/models/user.dart';
 import 'package:recruitica/screens/candidate_detail.dart';
 
 class CandidatePage extends StatefulWidget {
+  const CandidatePage({super.key});
+
   @override
   _CandidatePageState createState() => _CandidatePageState();
 }
@@ -59,7 +62,9 @@ class _CandidatePageState extends State<CandidatePage> {
             .set(true);
       }
     } catch (error) {
-      print("Error connecting user: $error");
+      if (kDebugMode) {
+        print("Error connecting user: $error");
+      }
     }
   }
 
@@ -74,7 +79,9 @@ class _CandidatePageState extends State<CandidatePage> {
             .remove();
       }
     } catch (error) {
-      print("Error disconnecting user: $error");
+      if (kDebugMode) {
+        print("Error disconnecting user: $error");
+      }
     }
   }
 
@@ -120,7 +127,11 @@ class _CandidatePageState extends State<CandidatePage> {
                     candidates.add(Candidate(
                       name: value['name'],
                       imageUrl: value['photo'],
-                      position: value['bio'],
+                      bio: value['bio'],
+                      company: value['company'],
+                      email: value['email'],
+                      location: value['location'],
+                      gender: value['gender'],
                       userID: candidateUserId,
                     ));
                   }
@@ -186,17 +197,26 @@ class _CandidatePageState extends State<CandidatePage> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      CandidateDetail(candidate: candidate),
+                                ),
+                              );
+                            },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: <Widget>[
                                 Expanded(
                                   child: Container(
+                                    height: 250,
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
                                         image: NetworkImage(candidate.imageUrl),
-                                        fit: BoxFit.cover,
+                                        fit: BoxFit.contain,
                                       ),
                                       borderRadius: const BorderRadius.vertical(
                                         top: Radius.circular(8.0),
@@ -204,6 +224,7 @@ class _CandidatePageState extends State<CandidatePage> {
                                     ),
                                   ),
                                 ),
+                                const SizedBox(height: 16.0),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(

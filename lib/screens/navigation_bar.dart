@@ -6,16 +6,17 @@ import 'package:recruitica/screens/home.dart';
 import 'package:recruitica/screens/job_listings.dart';
 import 'package:recruitica/screens/login.dart';
 
-class Navigationmenu extends StatefulWidget {
-  const Navigationmenu({Key? key}) : super(key: key);
+class Navigation extends StatefulWidget {
+  const Navigation({super.key});
 
   @override
-  _NavigationmenuState createState() => _NavigationmenuState();
+  _NavigationState createState() => _NavigationState();
 }
 
-class _NavigationmenuState extends State<Navigationmenu> {
+class _NavigationState extends State<Navigation> {
   int _currentIndex = 0;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  Color blueApp = const Color(0xFF5D63D4);
 
   @override
   void initState() {
@@ -45,7 +46,7 @@ class _NavigationmenuState extends State<Navigationmenu> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: blueApp,
         actions: [
           IconButton(
             icon: const Icon(Icons.search, color: Colors.black),
@@ -65,17 +66,36 @@ class _NavigationmenuState extends State<Navigationmenu> {
         ),
       ),
       body: _buildBody(),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (int index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        unselectedItemColor: Colors.black,
-        selectedItemColor: Colors.deepPurple,
-        items: _buildBottomNavBarItems(),
-      ),
+      bottomNavigationBar: _auth.currentUser != null
+          ? BottomNavigationBar(
+              currentIndex: _currentIndex,
+              onTap: (int index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+              unselectedItemColor: Colors.black,
+              selectedItemColor: Colors.deepPurple,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.people),
+                  label: 'Candidates',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.add),
+                  label: 'Create Post',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.work),
+                  label: 'Job Listings',
+                ),
+              ],
+            )
+          : null,
     );
   }
 
@@ -83,59 +103,13 @@ class _NavigationmenuState extends State<Navigationmenu> {
     if (_auth.currentUser != null) {
       return _screens[_currentIndex];
     } else {
-      return LoginPage();
-    }
-  }
-
-  List<BottomNavigationBarItem> _buildBottomNavBarItems() {
-    if (_auth.currentUser != null) {
-      return const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.people),
-          label: 'Candidates',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.add),
-          label: 'Create Post',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.work),
-          label: 'Job Listings',
-        ),
-      ];
-    } else {
-      return const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.people),
-          label: 'Candidates',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.add),
-          label: 'Create Post',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.work),
-          label: 'Job Listings',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.login),
-          label: 'Login',
-        ),
-      ];
+      return const LoginPage();
     }
   }
 
   final List<Widget> _screens = [
     HomePage(title: "Home"),
-    CandidatePage(),
+    const CandidatePage(),
     const CreatePost(),
     const JobListings(),
   ];

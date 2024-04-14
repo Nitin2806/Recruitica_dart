@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class CreatePost extends StatefulWidget {
-  const CreatePost({Key? key}) : super(key: key);
+  const CreatePost({super.key});
 
   @override
   _CreatePostState createState() => _CreatePostState();
@@ -14,9 +14,10 @@ class _CreatePostState extends State<CreatePost>
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
+  late int _newPostID;
 
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   @override
   void initState() {
@@ -53,11 +54,42 @@ class _CreatePostState extends State<CreatePost>
     super.dispose();
   }
 
+  Future<void> _getNextPostID() async {
+    final DatabaseReference usersReference =
+        FirebaseDatabase.instance.reference().child('posts');
+    DataSnapshot snapshot;
+    try {
+      await usersReference
+          .orderByChild('postID')
+          .limitToLast(1)
+          .once()
+          .then((event) {
+        snapshot = event.snapshot;
+        if (snapshot.value != null) {
+          Map<dynamic, dynamic> data = snapshot.value as Map<dynamic, dynamic>;
+
+          if (data != null && data.isNotEmpty) {
+            print("NEW Post ID: $data");
+
+            int lastUserID = data.values.first['postID'];
+            print("NEW Post ID: $lastUserID");
+            _newPostID = lastUserID + 1;
+          }
+        } else {
+          _newPostID = 1;
+        }
+      });
+    } catch (error) {
+      print('Error retrieving user data: $error');
+    }
+  }
+
   Future<void> _addPost() async {
+    await _getNextPostID();
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
-      print(user);
+      // print("User found : $user");
       String userUID = user.uid;
       String userID = "";
 
@@ -67,7 +99,7 @@ class _CreatePostState extends State<CreatePost>
       DataSnapshot userSnapshot =
           (await usersRef.child(userUID).once()).snapshot;
 
-      print("Get snapp : ${userSnapshot.runtimeType}");
+      // print("Get snap : ${userSnapshot.runtimeType}");
 
       if (userSnapshot.value != null) {
         Map<dynamic, dynamic>? userData =
@@ -75,12 +107,10 @@ class _CreatePostState extends State<CreatePost>
 
         if (userData != null && userData.containsKey('userID')) {
           dynamic userUserID = userData['userID'];
+          // print("Printing user userid: $userUserID");
           userID = userUserID.toString();
-
-          print('UserID from users collection: $userUserID');
         }
       }
-
       DatabaseReference postsRef =
           FirebaseDatabase.instance.reference().child('posts');
 
@@ -100,6 +130,7 @@ class _CreatePostState extends State<CreatePost>
         'description': _descriptionController.text,
         'imageURL': 'https://fakeimg.pl/400x200',
         'likes': 0,
+        'postID': _newPostID,
         'userID': userID,
       }).then((_) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -108,7 +139,7 @@ class _CreatePostState extends State<CreatePost>
           ),
         );
       }).catchError((error) {
-        print('Error adding post: $error');
+        // print('Error adding post: $error');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to add post: $error'),
@@ -128,14 +159,26 @@ class _CreatePostState extends State<CreatePost>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: FadeTransition(
-          opacity: _fadeAnimation,
-          child: ScaleTransition(
-            scale: _scaleAnimation,
-            child: _buildContent(),
+      body: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('lib/images/background.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-        ),
+          Center(
+            child: FadeTransition(
+              opacity: _fadeAnimation,
+              child: ScaleTransition(
+                scale: _scaleAnimation,
+                child: _buildContent(),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -146,11 +189,25 @@ class _CreatePostState extends State<CreatePost>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const Text(
+            "Create Post",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 40,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 20),
           TextFormField(
             controller: _titleController,
             decoration: const InputDecoration(
               hintText: 'Title',
-              border: OutlineInputBorder(),
+              fillColor: Colors.white,
+              filled: true,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                borderSide: BorderSide.none,
+              ),
             ),
           ),
           const SizedBox(height: 16),
@@ -159,24 +216,40 @@ class _CreatePostState extends State<CreatePost>
             maxLines: 3,
             decoration: const InputDecoration(
               hintText: 'Write a description',
-              border: OutlineInputBorder(),
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                borderSide: BorderSide.none,
+              ),
+              filled: true,
             ),
           ),
           const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: _addPost,
-            child: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 12.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.send, size: 24),
-                  SizedBox(width: 8),
-                  Text(
-                    'Post',
-                    style: TextStyle(fontSize: 20),
-                  ),
+          Container(
+            height: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              gradient: const LinearGradient(
+                colors: [
+                  Color.fromRGBO(143, 148, 251, 1),
+                  Color.fromRGBO(243, 148, 251, .6),
                 ],
+              ),
+            ),
+            child: ElevatedButton(
+              onPressed: () => _addPost(),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                shadowColor: Colors.transparent,
+              ),
+              child: const Center(
+                child: Text(
+                  "Add Post",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ),
@@ -187,7 +260,7 @@ class _CreatePostState extends State<CreatePost>
 }
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: CreatePost(),
   ));
 }

@@ -87,8 +87,6 @@ class HomePage extends StatelessWidget {
 
                   if (postData != null && postData is List) {
                     for (var i = 1; i < postData.length; i++) {
-                      // print("print postData: $i $postData[i]");
-
                       final post = postData[i];
                       if (post != null && post is Map) {
                         final postUserID = post['userID'].toString();
@@ -102,59 +100,71 @@ class HomePage extends StatelessWidget {
                       }
                     }
                   }
-                  // print("print posts $posts");
 
-                  return ListView.builder(
-                    itemCount: posts.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Card(
-                          elevation: 4,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              ListTile(
-                                leading: CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(posts[index].imageUrl),
-                                ),
-                                title: Text(posts[index].name),
-                              ),
-                              Image.network(
-                                posts[index].imageUrl,
-                                fit: BoxFit.cover,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  posts[index].description,
-                                  style: const TextStyle(fontSize: 16),
-                                ),
-                              ),
-                              ButtonBar(
-                                alignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.thumb_up),
-                                    onPressed: () {},
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.comment),
-                                    onPressed: () {},
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.share),
-                                    onPressed: () {},
-                                  ),
-                                ],
-                              ),
-                            ],
+                  return posts.isEmpty
+                      ? Center(
+                          child: Text(
+                            'No posts available. Add New Connection ',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.grey[600],
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  );
+                        )
+                      : ListView.builder(
+                          itemCount: posts.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Card(
+                                elevation: 4,
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    ListTile(
+                                      leading: CircleAvatar(
+                                        backgroundImage:
+                                            NetworkImage(posts[index].imageUrl),
+                                      ),
+                                      title: Text(posts[index].name),
+                                    ),
+                                    Image.network(
+                                      posts[index].imageUrl,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        posts[index].description,
+                                        style: const TextStyle(fontSize: 16),
+                                      ),
+                                    ),
+                                    ButtonBar(
+                                      alignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(Icons.thumb_up),
+                                          onPressed: () {},
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.comment),
+                                          onPressed: () {},
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.share),
+                                          onPressed: () {},
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
                 },
               );
             },
