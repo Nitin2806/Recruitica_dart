@@ -38,13 +38,10 @@ class _LoginPageState extends State<LoginPage> {
         MaterialPageRoute(builder: (context) => const Navigation()),
       );
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
+      print(e.code);
+      if (e.code == 'invalid-credential') {
         setState(() {
-          _errorMessage = 'No user found for that email.';
-        });
-      } else if (e.code == 'wrong-password') {
-        setState(() {
-          _errorMessage = 'Wrong password provided for that user.';
+          _errorMessage = 'Invalid Email or password';
         });
       } else {
         setState(() {
@@ -94,7 +91,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(30.0),
+              padding: const EdgeInsets.only(
+                  left: 30.0, top: 0.0, right: 30.0, bottom: 30.0),
               child: Column(
                 children: <Widget>[
                   Container(
@@ -177,7 +175,20 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 10),
+                  if (_errorMessage.isNotEmpty) ...[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 16.0),
+                      child: Text(
+                        _errorMessage,
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

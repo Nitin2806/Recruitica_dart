@@ -1,9 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class CreatePost extends StatefulWidget {
-  const CreatePost({super.key});
+  const CreatePost({Key? key}) : super(key: key);
 
   @override
   _CreatePostState createState() => _CreatePostState();
@@ -15,9 +16,14 @@ class _CreatePostState extends State<CreatePost>
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
   late int _newPostID;
+  late int _newJobListingID;
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _companyNameController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _salaryController = TextEditingController();
+  String _selectedType = 'Post'; // Default value
 
   @override
   void initState() {
@@ -54,6 +60,72 @@ class _CreatePostState extends State<CreatePost>
     super.dispose();
   }
 
+  Future<void> _getNextJobListingID() async {
+    final DatabaseReference jobListingsReference =
+        FirebaseDatabase.instance.reference().child('joblistings');
+    DataSnapshot snapshot;
+    try {
+      await jobListingsReference.once().then((event) {
+        snapshot = event.snapshot;
+        if (snapshot.value != null) {
+          List<dynamic> data = snapshot.value as List<dynamic>;
+          // print("Printing Data for job listings : ${data}");
+          if (data.isNotEmpty) {
+            int lastJobListingID = 0;
+            data.forEach((item) {
+              if (item != null && item['id'] != null) {
+                // print("Printing Data for job listings : ${item}");
+                int jobListingID = item['id'];
+                if (jobListingID > lastJobListingID) {
+                  lastJobListingID = jobListingID;
+                }
+              }
+            });
+
+            _newJobListingID = lastJobListingID + 1;
+            // print("Printing Job lisiting new one : ${_newJobListingID}");
+          }
+        } else {
+          _newJobListingID = 1;
+        }
+      });
+    } catch (error) {
+      if (kDebugMode) {
+        print('Error retrieving job listings data: $error');
+      }
+    }
+  }
+
+  Future<void> _addJobListing() async {
+    await _getNextJobListingID();
+
+    DatabaseReference jobListingsRef =
+        FirebaseDatabase.instance.reference().child('joblistings');
+
+    try {
+      await jobListingsRef.child(_newJobListingID.toString()).set({
+        'companyName': _companyNameController.text,
+        'location': _locationController.text,
+        'salary': _salaryController.text,
+        'title': _titleController.text,
+        'id': _newJobListingID,
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Job listing added successfully!'),
+        ),
+      );
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to add job listing: $error'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   Future<void> _getNextPostID() async {
     final DatabaseReference usersReference =
         FirebaseDatabase.instance.reference().child('posts');
@@ -69,10 +141,10 @@ class _CreatePostState extends State<CreatePost>
           Map<dynamic, dynamic> data = snapshot.value as Map<dynamic, dynamic>;
 
           if (data != null && data.isNotEmpty) {
-            print("NEW Post ID: $data");
+            // print("NEW Post ID: $data");
 
             int lastUserID = data.values.first['postID'];
-            print("NEW Post ID: $lastUserID");
+            // print("NEW Post ID: $lastUserID");
             _newPostID = lastUserID + 1;
           }
         } else {
@@ -80,7 +152,9 @@ class _CreatePostState extends State<CreatePost>
         }
       });
     } catch (error) {
-      print('Error retrieving user data: $error');
+      if (kDebugMode) {
+        print('Error retrieving user data: $error');
+      }
     }
   }
 
@@ -159,26 +233,28 @@ class _CreatePostState extends State<CreatePost>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('lib/images/background.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('lib/images/background.png'),
+            fit: BoxFit.cover,
           ),
-          Center(
-            child: FadeTransition(
-              opacity: _fadeAnimation,
-              child: ScaleTransition(
-                scale: _scaleAnimation,
-                child: _buildContent(),
+        ),
+        child: SingleChildScrollView(
+          child: Stack(
+            children: [
+              Center(
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: ScaleTransition(
+                    scale: _scaleAnimation,
+                    child: _buildContent(),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -198,6 +274,35 @@ class _CreatePostState extends State<CreatePost>
             ),
           ),
           const SizedBox(height: 20),
+          DropdownButtonFormField<String>(
+            value: _selectedType,
+            onChanged: (value) {
+              setState(() {
+                _selectedType = value!;
+              });
+            },
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide.none,
+              ),
+            ),
+            items: ['Post', 'Job Listing']
+                .map<DropdownMenuItem<String>>(
+                  (value) => DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(
+                      value,
+                      style: const TextStyle(
+                          color: Colors.black), // Adjust text color if needed
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+          const SizedBox(height: 16),
           TextFormField(
             controller: _titleController,
             decoration: const InputDecoration(
@@ -224,6 +329,48 @@ class _CreatePostState extends State<CreatePost>
               filled: true,
             ),
           ),
+          if (_selectedType == 'Job Listing') ...[
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _companyNameController,
+              decoration: const InputDecoration(
+                hintText: 'Company Name',
+                fillColor: Colors.white,
+                filled: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _locationController,
+              decoration: const InputDecoration(
+                hintText: 'Location',
+                fillColor: Colors.white,
+                filled: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _salaryController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                hintText: 'Salary',
+                fillColor: Colors.white,
+                filled: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+          ],
           const SizedBox(height: 20),
           Container(
             height: 50,
@@ -237,7 +384,12 @@ class _CreatePostState extends State<CreatePost>
               ),
             ),
             child: ElevatedButton(
-              onPressed: () => _addPost(),
+              onPressed: () => {
+                if (_selectedType == 'Job Listing')
+                  {_addJobListing()}
+                else
+                  {_addPost()}
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.transparent,
                 shadowColor: Colors.transparent,
@@ -257,10 +409,4 @@ class _CreatePostState extends State<CreatePost>
       ),
     );
   }
-}
-
-void main() {
-  runApp(const MaterialApp(
-    home: CreatePost(),
-  ));
 }

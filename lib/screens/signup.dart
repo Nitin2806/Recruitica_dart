@@ -16,6 +16,8 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordVerifyController =
+      TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _companyController = TextEditingController();
@@ -23,6 +25,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   String? _selectedGender;
   late int _newUserID;
+  String _errorMessage = '';
 
   Future<void> _getNextUserID() async {
     final DatabaseReference usersReference =
@@ -54,6 +57,22 @@ class _SignUpPageState extends State<SignUpPage> {
 
   void _registerWithEmailAndPassword(BuildContext context) async {
     try {
+      if (_emailController.text.trim().isEmpty ||
+          _passwordController.text.trim().isEmpty) {
+        setState(() {
+          _errorMessage = 'Please enter email and password';
+        });
+        return;
+      }
+
+      if (_passwordController.text.trim() !=
+          _passwordVerifyController.text.trim()) {
+        setState(() {
+          _errorMessage = 'Password does not match!';
+        });
+        return;
+      }
+
       await _getNextUserID();
 
       UserCredential userCredential =
@@ -84,6 +103,9 @@ class _SignUpPageState extends State<SignUpPage> {
       if (kDebugMode) {
         print("Error registering user: $e");
       }
+      setState(() {
+        _errorMessage = 'Error registering user. Please try again.';
+      });
     }
   }
 
@@ -98,7 +120,8 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(
+              left: 16.0, top: 40.0, right: 16.0, bottom: 16.0),
           child: Center(
             child: SingleChildScrollView(
               child: Column(
@@ -145,6 +168,20 @@ class _SignUpPageState extends State<SignUpPage> {
                     controller: _passwordController,
                     decoration: const InputDecoration(
                       hintText: "Password",
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    obscureText: true,
+                  ),
+                  const SizedBox(height: 16.0),
+                  TextField(
+                    controller: _passwordVerifyController,
+                    decoration: const InputDecoration(
+                      hintText: "Re-enter Password",
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(
@@ -239,7 +276,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         shadowColor: Colors.transparent,
                       ),
                       child: const Text(
-                        'Sign Up',
+                        'Create account',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -247,7 +284,24 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 5.0),
+                  if (_errorMessage.isNotEmpty) ...[
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 8.0,
+                          horizontal: 8.0,
+                        ),
+                        child: Text(
+                          _errorMessage,
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

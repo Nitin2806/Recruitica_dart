@@ -1,0 +1,312 @@
+{
+  "appliedjobs": {
+    "-NvFf2F3G2im2_GZRHLF": {
+      "jobDetails": {
+        "companyName": "Intel",
+        "id": 5,
+        "location": "USA",
+        "salary": 30000,
+        "title": "Flutter Developer"
+      },
+      "uid": "dY36YIEwEzbecgqcxSfqLbj5V1k2"
+    },
+    "-NvFf3kQa9EK5FHQrLGl": {
+      "jobDetails": {
+        "companyName": "Microsoft",
+        "id": 3,
+        "location": "",
+        "salary": 30000,
+        "title": "Flutter Developer"
+      },
+      "uid": "dY36YIEwEzbecgqcxSfqLbj5V1k2"
+    },
+    "-NvFf4eKHW7c_A_aSRAK": {
+      "jobDetails": {
+        "companyName": "Nvidia",
+        "id": 2,
+        "location": "USA",
+        "salary": 10000,
+        "title": "Flutter Developer"
+      },
+      "uid": "dY36YIEwEzbecgqcxSfqLbj5V1k2"
+    },
+    "-NvI-2MNrx238hYukpff": {
+      "jobDetails": {
+        "companyName": "Google",
+        "id": 1,
+        "location": "Silicon Valley",
+        "salary": 10000,
+        "title": "Software Engineer"
+      },
+      "uid": "dY36YIEwEzbecgqcxSfqLbj5V1k2"
+    },
+    "-NvIJFjozIuLA31vNFuB": {
+      "jobDetails": {
+        "companyName": "Google",
+        "id": 1,
+        "location": "Silicon Valley",
+        "salary": 10000,
+        "title": "Software Engineer"
+      },
+      "uid": "WsIMrb5oKnOsy3G5UkGonRd9Pk53"
+    },
+    "-NvNYhlA3F7CeuJqfVV4": {
+      "jobDetails": {
+        "companyName": "Microsoft",
+        "id": 3,
+        "location": "",
+        "salary": 30000,
+        "title": "Flutter Developer"
+      },
+      "uid": "pI8NbKOSRIOK18r678lGJkltVgA2"
+    },
+    "-NvOEr_24_CnrYhVxpcs": {
+      "jobDetails": {
+        "companyName": "Nvidia",
+        "id": 2,
+        "location": "USA",
+        "salary": 10000,
+        "title": "Flutter Developer"
+      },
+      "uid": "WsIMrb5oKnOsy3G5UkGonRd9Pk53"
+    },
+    "-NvOErycnamuLw0wgIpP": {
+      "jobDetails": {
+        "companyName": "Microsoft",
+        "id": 3,
+        "location": "",
+        "salary": 30000,
+        "title": "Flutter Developer"
+      },
+      "uid": "WsIMrb5oKnOsy3G5UkGonRd9Pk53"
+    },
+    "-NvOEsy0s06yq5CS695j": {
+      "jobDetails": {
+        "companyName": "Adobe",
+        "id": 4,
+        "location": "USA",
+        "salary": 43000,
+        "title": "Flutter Developer"
+      },
+      "uid": "WsIMrb5oKnOsy3G5UkGonRd9Pk53"
+    }
+  },
+  "connections": {
+    "R1j4nZtIJwZ2Wigcj0KJd8SOHP53": [
+      null,
+      true
+    ],
+    "WsIMrb5oKnOsy3G5UkGonRd9Pk53": {
+      "1": true,
+      "4": true
+    },
+    "dY36YIEwEzbecgqcxSfqLbj5V1k2": [
+      null,
+      null,
+      true,
+      true,
+      true,
+      null,
+      true
+    ],
+    "pI8NbKOSRIOK18r678lGJkltVgA2": [
+      null,
+      true
+    ]
+  },
+  "joblistings": [
+    null,
+    {
+      "companyName": "Google",
+      "id": 1,
+      "location": "Silicon Valley",
+      "salary": 10000,
+      "title": "Software Engineer"
+    },
+    {
+      "companyName": "Nvidia",
+      "id": 2,
+      "location": "USA",
+      "salary": 10000,
+      "title": "Flutter Developer"
+    },
+    {
+      "companyName": "Microsoft",
+      "id": 3,
+      "location": "",
+      "salary": 30000,
+      "title": "Flutter Developer"
+    },
+    {
+      "companyName": "Adobe",
+      "id": 4,
+      "location": "USA",
+      "salary": 43000,
+      "title": "Flutter Developer"
+    },
+    {
+      "companyName": "Intel",
+      "id": 5,
+      "location": "USA",
+      "salary": 30000,
+      "title": "Flutter Developer"
+    }
+  ],
+  "posts": [
+    null,
+    {
+      "description": "Nitin",
+      "imageURL": "https://fakeimg.pl/400x200",
+      "likes": 222,
+      "postID": 1,
+      "title": " Nitin Mishra",
+      "userID": "1"
+    },
+    {
+      "description": "This is a post created by Deep Bhojani",
+      "imageURL": "https://fakeimg.pl/400x200",
+      "likes": 22,
+      "postID": 2,
+      "title": "Deep",
+      "userID": "2"
+    },
+    {
+      "description": "This is a post created by Aswathi ES",
+      "imageURL": "https://fakeimg.pl/400x200",
+      "likes": 334,
+      "postID": 3,
+      "title": "Aswathi",
+      "userID": "3"
+    },
+    {
+      "description": "A Post by Shubhkiranjit",
+      "imageURL": "https://fakeimg.pl/400x200",
+      "likes": 33,
+      "postID": 4,
+      "title": "Shubhkiranjit",
+      "userID": "4"
+    },
+    {
+      "description": "Hello",
+      "imageURL": "https://fakeimg.pl/400x200",
+      "likes": 0,
+      "postID": 5,
+      "title": "Nitin",
+      "userID": "1"
+    },
+    {
+      "description": "Hello",
+      "imageURL": "https://fakeimg.pl/400x200",
+      "likes": 0,
+      "postID": 6,
+      "title": "Nitin 2",
+      "userID": "1"
+    },
+    {
+      "description": "Hello from Nitin",
+      "imageURL": "https://fakeimg.pl/400x200",
+      "likes": 0,
+      "postID": 7,
+      "title": "Nitin 2",
+      "userID": "1"
+    },
+    {
+      "description": "Testing Dart",
+      "imageURL": "https://fakeimg.pl/400x200",
+      "likes": 0,
+      "postID": 8,
+      "title": "I am test user",
+      "userID": "7"
+    },
+    {
+      "description": "I am Nitin ",
+      "imageURL": "https://fakeimg.pl/400x200",
+      "likes": 0,
+      "postID": 9,
+      "title": "Hello",
+      "userID": "1"
+    }
+  ],
+  "users": {
+    "3rKOTNBJxnfDRviRGwRJUpsdfiu1": {
+      "bio": "Store Manager",
+      "company": "No Frills",
+      "email": "deep@gmail.com",
+      "gender": "Male",
+      "location": "Kitchener",
+      "name": "Deep Bhojani",
+      "photo": "https://firebasestorage.googleapis.com/v0/b/recruitica-8c2be.appspot.com/o/logo.png?alt=media&token=9ec2840c-c6d7-4ac0-a75a-c2dbce9f3715",
+      "userID": 2
+    },
+    "6V7aTi9J26RM8FrfO4FPVKkvcpv1": {
+      "bio": "I am Navin, the great",
+      "company": "Conestoga",
+      "email": "navin@gmail.com",
+      "gender": "Male",
+      "location": "Waterloo",
+      "name": "Navin Thomas",
+      "photo": "https://firebasestorage.googleapis.com/v0/b/recruitica-8c2be.appspot.com/o/logo.png?alt=media&token=9ec2840c-c6d7-4ac0-a75a-c2dbce9f3715",
+      "userID": 6
+    },
+    "PQ4vnBLYzoZOtau0axz6LScjnal1": {
+      "bio": "Developer",
+      "company": "Remote",
+      "email": "shubhkiranjit@gmail.com",
+      "gender": "Female",
+      "location": "Cambridge ",
+      "name": "ShubhKiranjit",
+      "photo": "https://firebasestorage.googleapis.com/v0/b/recruitica-8c2be.appspot.com/o/logo.png?alt=media&token=9ec2840c-c6d7-4ac0-a75a-c2dbce9f3715",
+      "userID": 4
+    },
+    "R1j4nZtIJwZ2Wigcj0KJd8SOHP53": {
+      "bio": "UI Designer",
+      "company": "UI",
+      "email": "testui@gmail.com",
+      "gender": "Other",
+      "location": "",
+      "name": "Test UI",
+      "photo": "https://firebasestorage.googleapis.com/v0/b/recruitica-8c2be.appspot.com/o/logo.png?alt=media&token=9ec2840c-c6d7-4ac0-a75a-c2dbce9f3715",
+      "userID": 8
+    },
+    "WsIMrb5oKnOsy3G5UkGonRd9Pk53": {
+      "bio": "uvfgy",
+      "company": "Google",
+      "email": "test@gmail.com",
+      "gender": "Male",
+      "location": "testing",
+      "name": "Test User",
+      "photo": "https://firebasestorage.googleapis.com/v0/b/recruitica-8c2be.appspot.com/o/logo.png?alt=media&token=9ec2840c-c6d7-4ac0-a75a-c2dbce9f3715",
+      "userID": 5
+    },
+    "dY36YIEwEzbecgqcxSfqLbj5V1k2": {
+      "bio": "IT Technician ",
+      "company": "Conestoga College",
+      "email": "mnitin2311@gmail.com",
+      "gender": "Male",
+      "location": "Kitchener",
+      "name": "Nitin Mishra",
+      "photo": "https://firebasestorage.googleapis.com/v0/b/recruitica-8c2be.appspot.com/o/1685300228679.jpeg?alt=media&token=44e31788-33b2-4727-8396-3ad66041e5af",
+      "userID": 1
+    },
+    "nTSHJQz5RGWz3sNKgPEq1CTvUFY2": {
+      "bio": "Store Manager",
+      "company": "Walmart",
+      "email": "aswathi@gmail.com",
+      "gender": "Male",
+      "location": "Kitchener",
+      "name": "Aswathi ES",
+      "photo": "https://firebasestorage.googleapis.com/v0/b/recruitica-8c2be.appspot.com/o/logo.png?alt=media&token=9ec2840c-c6d7-4ac0-a75a-c2dbce9f3715",
+      "userID": 3
+    },
+    "pI8NbKOSRIOK18r678lGJkltVgA2": {
+      "bio": "Make new home",
+      "company": "Home Services",
+      "email": "test2@gmail.com",
+      "gender": "Female",
+      "location": "Waterloo",
+      "name": "Test User 2",
+      "photo": "https://firebasestorage.googleapis.com/v0/b/recruitica-8c2be.appspot.com/o/logo.png?alt=media&token=9ec2840c-c6d7-4ac0-a75a-c2dbce9f3715",
+      "userID": 7
+    }
+  }
+}

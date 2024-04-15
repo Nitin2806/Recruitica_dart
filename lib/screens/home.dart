@@ -104,13 +104,16 @@ class HomePage extends StatelessWidget {
                   return posts.isEmpty
                       ? Center(
                           child: Text(
-                            'No posts available. Add New Connection ',
+                            'No posts available.\nAdd new connections to see posts ',
                             style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
                               fontStyle: FontStyle.italic,
                               color: Colors.grey[600],
                             ),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         )
                       : ListView.builder(
