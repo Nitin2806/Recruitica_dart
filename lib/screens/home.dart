@@ -7,11 +7,11 @@ class HomePage extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final DatabaseReference postsReference =
-      FirebaseDatabase.instance.reference().child('posts');
+      FirebaseDatabase.instance.ref('posts');
   final DatabaseReference connectionsReference =
-      FirebaseDatabase.instance.reference().child('connections');
+      FirebaseDatabase.instance.ref('connections');
 
-  HomePage({required this.title});
+  HomePage({super.key, required this.title});
 
   final String title;
 

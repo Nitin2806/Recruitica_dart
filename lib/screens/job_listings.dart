@@ -15,7 +15,7 @@ class _JobListingsState extends State<JobListings>
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
 
-  final databaseReference = FirebaseDatabase.instance.reference();
+  final databaseReference = FirebaseDatabase.instance.ref();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Set<String> _appliedJobIds = {};

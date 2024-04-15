@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:recruitica/screens/login.dart';
-import 'package:recruitica/screens/navigation_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {

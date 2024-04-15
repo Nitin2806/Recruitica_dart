@@ -29,7 +29,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Future<void> _getNextUserID() async {
     final DatabaseReference usersReference =
-        FirebaseDatabase.instance.reference().child('users');
+        FirebaseDatabase.instance.ref('users');
     DataSnapshot snapshot;
     try {
       await usersReference
@@ -82,7 +82,7 @@ class _SignUpPageState extends State<SignUpPage> {
       );
 
       final DatabaseReference usersReference =
-          FirebaseDatabase.instance.reference().child('users');
+          FirebaseDatabase.instance.ref('users');
       await usersReference.child(userCredential.user!.uid).set({
         'name': _nameController.text.trim(),
         'email': _emailController.text.trim(),
