@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: |
           dart pub get
-          dart pub add --dev test
+          
 
       - name: Analyze project source
         run: dart analyze
