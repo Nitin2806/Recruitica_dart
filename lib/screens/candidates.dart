@@ -16,11 +16,11 @@ class CandidatePage extends StatefulWidget {
 class _CandidatePageState extends State<CandidatePage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final DatabaseReference _usersReference =
-      FirebaseDatabase.instance.reference().child('users');
+      FirebaseDatabase.instance.ref('users');
   final DatabaseReference _connectionsReference =
-      FirebaseDatabase.instance.reference().child('connections');
+      FirebaseDatabase.instance.ref('connections');
   final DatabaseReference connectionsReference =
-      FirebaseDatabase.instance.reference().child('connections');
+      FirebaseDatabase.instance.ref('connections');
 
   StreamSubscription? _userSubscription;
   StreamSubscription? _connectionsSubscription;

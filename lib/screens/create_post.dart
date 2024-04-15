@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class CreatePost extends StatefulWidget {
-  const CreatePost({Key? key}) : super(key: key);
+  const CreatePost({super.key});
 
   @override
   _CreatePostState createState() => _CreatePostState();
@@ -62,7 +62,7 @@ class _CreatePostState extends State<CreatePost>
 
   Future<void> _getNextJobListingID() async {
     final DatabaseReference jobListingsReference =
-        FirebaseDatabase.instance.reference().child('joblistings');
+        FirebaseDatabase.instance.ref('joblistings');
     DataSnapshot snapshot;
     try {
       await jobListingsReference.once().then((event) {
@@ -72,7 +72,7 @@ class _CreatePostState extends State<CreatePost>
           // print("Printing Data for job listings : ${data}");
           if (data.isNotEmpty) {
             int lastJobListingID = 0;
-            data.forEach((item) {
+            for (var item in data) {
               if (item != null && item['id'] != null) {
                 // print("Printing Data for job listings : ${item}");
                 int jobListingID = item['id'];
@@ -80,7 +80,7 @@ class _CreatePostState extends State<CreatePost>
                   lastJobListingID = jobListingID;
                 }
               }
-            });
+            }
 
             _newJobListingID = lastJobListingID + 1;
             // print("Printing Job lisiting new one : ${_newJobListingID}");
@@ -100,7 +100,7 @@ class _CreatePostState extends State<CreatePost>
     await _getNextJobListingID();
 
     DatabaseReference jobListingsRef =
-        FirebaseDatabase.instance.reference().child('joblistings');
+        FirebaseDatabase.instance.ref('joblistings');
 
     try {
       await jobListingsRef.child(_newJobListingID.toString()).set({
@@ -128,7 +128,7 @@ class _CreatePostState extends State<CreatePost>
 
   Future<void> _getNextPostID() async {
     final DatabaseReference usersReference =
-        FirebaseDatabase.instance.reference().child('posts');
+        FirebaseDatabase.instance.ref('posts');
     DataSnapshot snapshot;
     try {
       await usersReference
@@ -140,7 +140,7 @@ class _CreatePostState extends State<CreatePost>
         if (snapshot.value != null) {
           Map<dynamic, dynamic> data = snapshot.value as Map<dynamic, dynamic>;
 
-          if (data != null && data.isNotEmpty) {
+          if (data.isNotEmpty) {
             // print("NEW Post ID: $data");
 
             int lastUserID = data.values.first['postID'];
@@ -167,8 +167,7 @@ class _CreatePostState extends State<CreatePost>
       String userUID = user.uid;
       String userID = "";
 
-      DatabaseReference usersRef =
-          FirebaseDatabase.instance.reference().child('users');
+      DatabaseReference usersRef = FirebaseDatabase.instance.ref('users');
 
       DataSnapshot userSnapshot =
           (await usersRef.child(userUID).once()).snapshot;
@@ -185,8 +184,7 @@ class _CreatePostState extends State<CreatePost>
           userID = userUserID.toString();
         }
       }
-      DatabaseReference postsRef =
-          FirebaseDatabase.instance.reference().child('posts');
+      DatabaseReference postsRef = FirebaseDatabase.instance.ref('posts');
 
       DataSnapshot snapshot = (await postsRef.once()).snapshot;
 

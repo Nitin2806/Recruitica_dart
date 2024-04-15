@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
         return;
       }
 
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+      await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
         MaterialPageRoute(builder: (context) => const Navigation()),
       );
     } on FirebaseAuthException catch (e) {
-      print(e.code);
+      // print(e.code);
       if (e.code == 'invalid-credential') {
         setState(() {
           _errorMessage = 'Invalid Email or password';
