@@ -10,14 +10,16 @@ class CreatePost extends StatefulWidget {
   _CreatePostState createState() => _CreatePostState();
 }
 
+//class to create new posts and job listings
 class _CreatePostState extends State<CreatePost>
     with SingleTickerProviderStateMixin {
+  //animations controllers
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
   late int _newPostID;
   late int _newJobListingID;
-
+//textbox controller
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _companyNameController = TextEditingController();
@@ -60,6 +62,7 @@ class _CreatePostState extends State<CreatePost>
     super.dispose();
   }
 
+  //Function to get id of last posting so we can update the next one accordingly
   Future<void> _getNextJobListingID() async {
     final DatabaseReference jobListingsReference =
         FirebaseDatabase.instance.ref('joblistings');
@@ -96,11 +99,13 @@ class _CreatePostState extends State<CreatePost>
     }
   }
 
+//add job posting to firebase
   Future<void> _addJobListing() async {
     await _getNextJobListingID();
 
     DatabaseReference jobListingsRef =
         FirebaseDatabase.instance.ref('joblistings');
+    //getting the instance for firebase collection
 
     try {
       await jobListingsRef.child(_newJobListingID.toString()).set({
@@ -126,9 +131,11 @@ class _CreatePostState extends State<CreatePost>
     }
   }
 
+//Get post ID of last post
   Future<void> _getNextPostID() async {
     final DatabaseReference usersReference =
         FirebaseDatabase.instance.ref('posts');
+    //firebase instance  for posts collections
     DataSnapshot snapshot;
     try {
       await usersReference
