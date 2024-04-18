@@ -14,7 +14,9 @@ class CandidatePage extends StatefulWidget {
 }
 
 class _CandidatePageState extends State<CandidatePage> {
+  //Create instance for firebase users and their connections
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   final DatabaseReference _usersReference =
       FirebaseDatabase.instance.ref('users');
   final DatabaseReference _connectionsReference =
@@ -22,34 +24,43 @@ class _CandidatePageState extends State<CandidatePage> {
   final DatabaseReference connectionsReference =
       FirebaseDatabase.instance.ref('connections');
 
+// lines to declare variables to hold references to changes in auth
+// The question mark checks for null
   StreamSubscription? _userSubscription;
   StreamSubscription? _connectionsSubscription;
 
+// This runs when the app launches
   @override
   void initState() {
-    super.initState();
-    _resetStreamSubscriptions();
+    super.initState(); // Call the superclass' version of this method first
+    _resetStreamSubscriptions(); // This method sets up listeners
   }
 
+// This method runs when the app is closed
   @override
   void dispose() {
-    _userSubscription?.cancel();
-    _connectionsSubscription?.cancel();
-    super.dispose();
+    _userSubscription?.cancel(); // Stop listening for user changes
+    _connectionsSubscription?.cancel(); // Stop listening for connection changes
+    super.dispose(); // Call the superclass' version of this method
   }
 
+// This method resets the listeners
   void _resetStreamSubscriptions() {
+    // Stop any existing listeners
     _userSubscription?.cancel();
     _connectionsSubscription?.cancel();
 
+    // User Auth Changes
     _userSubscription = _auth.authStateChanges().listen((authUser) {});
 
+    // Connection Changes
     _connectionsSubscription = connectionsReference
         .child(_auth.currentUser?.uid ?? '')
         .onValue
         .listen((connectionsSnapshot) {});
   }
 
+  //Function to connect user and add the data to collection of connections if user is added as connection
   Future<void> _connectUser(int userId) async {
     try {
       User? user = _auth.currentUser;
@@ -67,6 +78,7 @@ class _CandidatePageState extends State<CandidatePage> {
       }
     }
   }
+  //Function to disconnect user and remove the data of connections if user is removed as connection
 
   Future<void> _disconnectUser(int userId) async {
     try {
@@ -85,6 +97,8 @@ class _CandidatePageState extends State<CandidatePage> {
     }
   }
 
+  //UI for screen
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,7 +110,7 @@ class _CandidatePageState extends State<CandidatePage> {
               child: CircularProgressIndicator(),
             );
           }
-
+// Stroing user snapshot
           User? user = authSnapshot.data;
           String? uid = user?.uid;
 
@@ -115,11 +129,13 @@ class _CandidatePageState extends State<CandidatePage> {
                   child: Text('Error: ${userSnapshot.error}'),
                 );
               }
-
+              //list to store all candidates
               final List<Candidate> candidates = [];
+// adding snapshot value to userData variable
               final userData = userSnapshot.data!.snapshot.value;
 
               if (userData != null && userData is Map) {
+                //from userData list getting all the data sepeately and using the Candidate model to input data getter and setter
                 userData.forEach((key, value) {
                   if (key != uid) {
                     int candidateUserId = value['userID'];
@@ -138,6 +154,7 @@ class _CandidatePageState extends State<CandidatePage> {
                 });
               }
               return StreamBuilder(
+                // If it takes time do loading
                 stream: connectionsReference.child(uid ?? '').onValue,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -151,10 +168,11 @@ class _CandidatePageState extends State<CandidatePage> {
                     );
                   }
                   final data = snapshot.data!.snapshot.value;
+                  // Now, check for connection to assign button condtions to connect
                   final List<String> connectedUserIDs = [];
 
                   // print("USer data : $data");
-
+// Data for recieved in mutliple form therefore verifying data to be a map ro list and adding it to connectedUserIds list
                   if (data != null) {
                     if (data is Map) {
                       data.forEach((key, value) {
@@ -177,6 +195,7 @@ class _CandidatePageState extends State<CandidatePage> {
                   return Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: GridView.builder(
+                      // Creating grid view
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
@@ -190,7 +209,7 @@ class _CandidatePageState extends State<CandidatePage> {
 
                         bool isConnected = connectedUserIDs
                             .contains(candidate.userID.toString());
-
+// creating card for each user
                         return Card(
                           elevation: 2,
                           shape: RoundedRectangleBorder(
@@ -212,6 +231,7 @@ class _CandidatePageState extends State<CandidatePage> {
                               children: <Widget>[
                                 Expanded(
                                   child: Container(
+                                    //Container to display all deta in column
                                     height: 250,
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
@@ -250,7 +270,9 @@ class _CandidatePageState extends State<CandidatePage> {
                                         ),
                                       ),
                                       const SizedBox(height: 8.0),
+                                      // Display button based on the condition if user is connected or not
                                       ElevatedButton(
+                                        //is pressed on connected then disconnect to then recoonect
                                         onPressed: isConnected
                                             ? () {
                                                 _disconnectUser(int.parse(
@@ -273,6 +295,7 @@ class _CandidatePageState extends State<CandidatePage> {
                                                 BorderRadius.circular(8.0),
                                           ),
                                         ),
+                                        //Change the text based on user connection status
                                         child: Text(
                                           isConnected ? 'Remove' : 'Connect',
                                           style: const TextStyle(
