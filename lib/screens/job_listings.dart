@@ -11,18 +11,22 @@ class JobListings extends StatefulWidget {
 
 class _JobListingsState extends State<JobListings>
     with SingleTickerProviderStateMixin {
+  // Intialize animation on page load
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
 
-  final databaseReference = FirebaseDatabase.instance.ref();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final databaseReference =
+      FirebaseDatabase.instance.ref(); //firebase  databaseInstance
+
+  final FirebaseAuth _auth = FirebaseAuth.instance; //firebase Instance
 
   Set<String> _appliedJobIds = {};
 
   @override
   void initState() {
     super.initState();
+    //initalize animation controller  for intercal of 800ms
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 800),
       vsync: this,
@@ -47,10 +51,11 @@ class _JobListingsState extends State<JobListings>
     );
 
     _animationController.forward();
-
+//fetch all applied jobs details
     _fetchAppliedJobs();
   }
 
+// fetch all  applied jobs using uid of user from appliedjobs collection
   void _fetchAppliedJobs() async {
     final user = _auth.currentUser;
     if (user != null) {
@@ -115,8 +120,9 @@ class _JobListingsState extends State<JobListings>
           );
         }
         final List<Widget> jobTiles = [];
+        // add jobs to list
         final dynamic data = snapshot.data!.snapshot.value;
-
+//add job data in jobtiles list
         if (data != null && data is List) {
           for (var i = 1; i < data.length; i++) {
             final jobData = data[i];
