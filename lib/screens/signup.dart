@@ -14,6 +14,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  //Controller for getting field data
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _passwordVerifyController =
@@ -26,12 +27,15 @@ class _SignUpPageState extends State<SignUpPage> {
   String? _selectedGender;
   late int _newUserID;
   String _errorMessage = '';
-
+// Getting the last user ID
   Future<void> _getNextUserID() async {
+    //get firebase instance for users collection
     final DatabaseReference usersReference =
         FirebaseDatabase.instance.ref('users');
+    //Based on the snapshot received find the userID from the object
     DataSnapshot snapshot;
     try {
+      // get the users from snapchat and order by ID and then fetch last user
       await usersReference
           .orderByChild('userID')
           .limitToLast(1)
@@ -42,9 +46,11 @@ class _SignUpPageState extends State<SignUpPage> {
           Map<dynamic, dynamic> data = snapshot.value as Map<dynamic, dynamic>;
           if (data.isNotEmpty) {
             int lastUserID = data.values.first['userID'];
+            // increase the value for userID with 1 to assign for new user
             _newUserID = lastUserID + 1;
           }
         } else {
+          // if no user then assign it as user 1
           _newUserID = 1;
         }
       });
@@ -55,8 +61,10 @@ class _SignUpPageState extends State<SignUpPage> {
     }
   }
 
+// Function to register user
   void _registerWithEmailAndPassword(BuildContext context) async {
     try {
+      //Validate user email and password and display error accordingly
       if (_emailController.text.trim().isEmpty ||
           _passwordController.text.trim().isEmpty) {
         setState(() {
@@ -73,16 +81,18 @@ class _SignUpPageState extends State<SignUpPage> {
         return;
       }
 
-      await _getNextUserID();
+      await _getNextUserID(); // Wait to fetch next user id
 
+      // After everything goes fine and user ID is recieved create the user in the firebase
       UserCredential userCredential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
-
+      // instance for the users collections
       final DatabaseReference usersReference =
           FirebaseDatabase.instance.ref('users');
+// add the data of user to firebase users collection when new user is created
       await usersReference.child(userCredential.user!.uid).set({
         'name': _nameController.text.trim(),
         'email': _emailController.text.trim(),
@@ -94,6 +104,8 @@ class _SignUpPageState extends State<SignUpPage> {
             "https://firebasestorage.googleapis.com/v0/b/recruitica-8c2be.appspot.com/o/logo.png?alt=media&token=9ec2840c-c6d7-4ac0-a75a-c2dbce9f3715",
         'userID': _newUserID,
       });
+
+      //once everything is fine push it to the main app which will load navigation
 
       Navigator.pushReplacement(
         context,
@@ -113,6 +125,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        //Add background image
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('lib/images/background.png'),
@@ -123,8 +136,10 @@ class _SignUpPageState extends State<SignUpPage> {
           padding: const EdgeInsets.only(
               left: 16.0, top: 40.0, right: 16.0, bottom: 16.0),
           child: Center(
+            //Add scrollview to the page for multiple content
             child: SingleChildScrollView(
               child: Column(
+                // Container for heading
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -138,6 +153,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32.0),
+                  //Textfields for signup page
                   TextField(
                     controller: _nameController,
                     decoration: const InputDecoration(
@@ -256,6 +272,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     maxLines: 3,
                   ),
                   const SizedBox(height: 32.0),
+                  // Style container for signup
                   Container(
                     height: 50,
                     decoration: BoxDecoration(
@@ -267,6 +284,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ],
                       ),
                     ),
+                    //button for signup
                     child: ElevatedButton(
                       onPressed: () {
                         _registerWithEmailAndPassword(context);
@@ -285,6 +303,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                   const SizedBox(height: 5.0),
+                  //Display error message text
                   if (_errorMessage.isNotEmpty) ...[
                     Center(
                       child: Padding(
@@ -303,6 +322,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ],
                   Row(
+                    // Row for login option to display two text
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(

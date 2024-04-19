@@ -10,13 +10,13 @@ class Navigation extends StatefulWidget {
   const Navigation({super.key});
 
   @override
-  _NavigationState createState() => _NavigationState();
+  _NavigationState createState() => _NavigationState(); //creating a state
 }
 
 class _NavigationState extends State<Navigation> {
   int _currentIndex = 0;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  Color blueApp = const Color(0xFF5D63D4);
+  final FirebaseAuth _auth = FirebaseAuth.instance; //Creating Firebase Instance
+  Color blueApp = const Color(0xFF5D63D4); //Color for AppBar
 
   @override
   void initState() {
@@ -24,6 +24,7 @@ class _NavigationState extends State<Navigation> {
     _checkAuth();
   }
 
+//Function to check if user is authenticated and assigned the index
   void _checkAuth() {
     if (_auth.currentUser != null) {
       setState(() {
@@ -48,6 +49,7 @@ class _NavigationState extends State<Navigation> {
         ),
         backgroundColor: blueApp,
         actions: [
+          //Icon Button for Log out based on the login status of the user
           IconButton(
             icon: const Icon(Icons.search, color: Colors.black),
             onPressed: () {},
@@ -60,12 +62,14 @@ class _NavigationState extends State<Navigation> {
               },
             ),
         ],
+        //App bar Logo
         leading: Image.asset(
           'lib/images/logo.png',
           height: 40,
         ),
       ),
       body: _buildBody(),
+      //Load the Icons if user is loggedin
       bottomNavigationBar: _auth.currentUser != null
           ? BottomNavigationBar(
               currentIndex: _currentIndex,
@@ -101,6 +105,7 @@ class _NavigationState extends State<Navigation> {
 
   Widget _buildBody() {
     if (_auth.currentUser != null) {
+      // If user is not loggedin  return to login page
       return _screens[_currentIndex];
     } else {
       return const LoginPage();
@@ -108,6 +113,7 @@ class _NavigationState extends State<Navigation> {
   }
 
   final List<Widget> _screens = [
+    //List for widgets to be loaded based on navigation selected
     HomePage(title: "Home"),
     const CandidatePage(),
     const CreatePost(),
@@ -115,6 +121,7 @@ class _NavigationState extends State<Navigation> {
   ];
 
   void _logout() async {
+    //Function tologout
     await _auth.signOut();
     setState(() {});
   }

@@ -5,7 +5,7 @@ import 'package:recruitica/models/post.dart';
 
 class HomePage extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
+//Reference to firebase to fetch posts and connections collection
   final DatabaseReference postsReference =
       FirebaseDatabase.instance.ref('posts');
   final DatabaseReference connectionsReference =
@@ -22,6 +22,7 @@ class HomePage extends StatelessWidget {
         stream: _auth.authStateChanges(),
         builder: (context, authSnapshot) {
           if (authSnapshot.connectionState == ConnectionState.waiting) {
+            //If the fetching takes time load circular progress bar for loading
             return const Center(
               child: CircularProgressIndicator(),
             );
@@ -46,10 +47,11 @@ class HomePage extends StatelessWidget {
               }
 
               final data = snapshot.data!.snapshot.value;
+              //First get all the connections
               final List<String> connectedUserIDs = [];
 
               // print("USer data : $data");
-
+              //Add all the connection userID to list of connecteduserID
               if (data != null) {
                 if (data is Map) {
                   data.forEach((key, value) {
@@ -85,11 +87,14 @@ class HomePage extends StatelessWidget {
                   final List<Post> posts = [];
                   final postData = snapshot.data!.snapshot.value;
 
+                  //Get all the post based on the userID
+
                   if (postData != null && postData is List) {
                     for (var i = 1; i < postData.length; i++) {
                       final post = postData[i];
                       if (post != null && post is Map) {
                         final postUserID = post['userID'].toString();
+                        //If post contain the userID of the connection collection then load the post
                         if (connectedUserIDs.contains(postUserID)) {
                           posts.add(Post(
                             name: post['title'] ?? '',
@@ -116,6 +121,7 @@ class HomePage extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         )
+                      //builder to display all the item in list
                       : ListView.builder(
                           itemCount: posts.length,
                           itemBuilder: (context, index) {

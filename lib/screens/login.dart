@@ -11,34 +11,39 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  //Controller for Getting user entered data
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+//Creating Firebase Instance
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  //String to store error message
   String _errorMessage = '';
-
+  //Function to run when pressed login
   void _signInWithEmailAndPassword(BuildContext context) async {
     try {
+      //trimming the email and password from controller
       final String email = _emailController.text.trim();
       final String password = _passwordController.text.trim();
-
+//If email or password is empty display error message
       if (email.isEmpty || password.isEmpty) {
         setState(() {
           _errorMessage = 'Please enter email and password';
         });
         return;
       }
-
+//User Firebase auth verify credentials
       await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-
+//If verified run the navigation  page
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const Navigation()),
       );
     } on FirebaseAuthException catch (e) {
       // print(e.code);
+      //based on the error code show the errors
       if (e.code == 'invalid-credential') {
         setState(() {
           _errorMessage = 'Invalid Email or password';
@@ -62,6 +67,7 @@ class _LoginPageState extends State<LoginPage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            //Used container for the overall screen to add a background image
             Container(
               height: 600,
               decoration: const BoxDecoration(
@@ -71,6 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               child: Stack(
+                // Adding login header
                 children: <Widget>[
                   Positioned(
                     child: Container(
@@ -94,8 +101,10 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.only(
                   left: 30.0, top: 0.0, right: 30.0, bottom: 30.0),
               child: Column(
+                //adding fields boxes
                 children: <Widget>[
                   Container(
+                    // container for fields
                     padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -122,6 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           ),
+                          //text fied for email
                           child: TextField(
                             controller: _emailController,
                             decoration: InputDecoration(
@@ -132,6 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         Container(
+                          //text field for password
                           padding: const EdgeInsets.all(8.0),
                           child: TextField(
                             controller: _passwordController,
@@ -148,6 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 30),
                   Container(
+                    //styling container for button
                     height: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -176,6 +188,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 10),
+                  //text for error message
                   if (_errorMessage.isNotEmpty) ...[
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -190,6 +203,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                   Row(
+                    // adding signup option for user if account not created
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
