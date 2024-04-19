@@ -15,9 +15,9 @@ Reference and Recommendations
 
 ## Features
 
-- MainActivity : When you are connected to someone than this allows you to see posts from your connections
+- Candidate Post: When you are connected to someone this allows you to see posts from your connections
 - Candidate: See all candidates register on this platform
-- Login & Signup: Login to existing account and signup for new account
+- Login & Signup: Login to existing account and sign up for new account
 
 ## Requirements
 
